@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping
     public List<User> findAll() {
-        log.debug("Количество пользователей {}", users.size());
+        log.debug("количество пользователей {}", users.size());
         return new ArrayList<>(users.values());
     }
 
