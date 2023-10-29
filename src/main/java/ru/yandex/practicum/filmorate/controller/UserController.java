@@ -8,15 +8,20 @@ import ru.yandex.practicum.filmorate.exception.InvalidBirthdayException;
 import ru.yandex.practicum.filmorate.exception.InvalidLoginException;
 import ru.yandex.practicum.filmorate.exception.InvalidNameException;
 import ru.yandex.practicum.filmorate.model.User;
+
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final static Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private final Map<Long,User> users = new HashMap<>();
+    private final Map<Long, User> users = new HashMap<>();
     private long generateId = 0;
 
     @GetMapping
@@ -40,7 +45,7 @@ public class UserController {
             user.setName(user.getLogin());
         }
         user.setId(++generateId);
-        users.put(user.getId(),user);
+        users.put(user.getId(), user);
         log.debug("Новый пользователь добавлен {}", user);
         return user;
     }

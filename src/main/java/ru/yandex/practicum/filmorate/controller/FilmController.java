@@ -27,11 +27,10 @@ import java.util.Map;
 @RequestMapping("/films")
 public class FilmController {
     private static final int MAX_LENGTH = 200;
-    private static final LocalDate MIN_DATE_RELEASE = LocalDate.of(1895,12,28);
+    private static final LocalDate MIN_DATE_RELEASE = LocalDate.of(1895, 12, 28);
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    private final Map<Long,Film> films = new HashMap<>();
+    private final Map<Long, Film> films = new HashMap<>();
     private long generateId = 0;
-
 
 
     @GetMapping
@@ -55,7 +54,7 @@ public class FilmController {
             throw new InvalidDurationTimeException("Продолжительность фильма не может быть отрицательной");
         }
         film.setId(++generateId);
-        films.put(film.getId(),film);
+        films.put(film.getId(), film);
         log.debug("Фильм добавлен {}", film);
         return film;
     }
@@ -75,7 +74,7 @@ public class FilmController {
             throw new InvalidDurationTimeException("Продолжительность фильма не может быть отрицательной");
         }
         if (films.containsKey(film.getId())) {
-            films.put(film.getId(),film);
+            films.put(film.getId(), film);
         } else {
             throw new IdNotFoundException("Фильм не найден");
         }
