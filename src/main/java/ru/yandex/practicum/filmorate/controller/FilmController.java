@@ -35,7 +35,7 @@ public class FilmController {
 
     @GetMapping
     public List<Film> findAll() {
-        log.debug("Количество фильмов {}", films.size());
+        log.debug("количество фильмов {}", films.size());
         return new ArrayList<>(films.values());
     }
 
