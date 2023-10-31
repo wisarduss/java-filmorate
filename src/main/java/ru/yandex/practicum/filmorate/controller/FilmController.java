@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import ru.yandex.practicum.filmorate.exception.IdNotFoundException;
-import ru.yandex.practicum.filmorate.exception.InvalidDurationTimeException;
-import ru.yandex.practicum.filmorate.exception.InvalidNameException;
-import ru.yandex.practicum.filmorate.exception.ReleaseDateException;
 import ru.yandex.practicum.filmorate.model.Film;
+import  ru.yandex.practicum.filmorate.validator.Validate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,8 +24,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private static final int MAX_LENGTH = 200;
-    private static final LocalDate MIN_DATE_RELEASE = LocalDate.of(1895, 12, 28);
+    Validate validate = new Validate();
+
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private final Map<Long, Film> films = new HashMap<>();
     private long generateId = 0;
@@ -41,18 +39,7 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) {
-        if (film.getName().isBlank() || film.getName().isEmpty()) {
-            throw new InvalidNameException("Имя не может быть пустым");
-        }
-        if (film.getDescription().length() > MAX_LENGTH) {
-            throw new InvalidNameException("Описание фильма не может быть больше чем " + MAX_LENGTH + "символов");
-        }
-        if (film.getReleaseDate().isBefore(MIN_DATE_RELEASE)) {
-            throw new ReleaseDateException("Дата релиза фильма не может быть раньше " + MIN_DATE_RELEASE);
-        }
-        if (film.getDuration() <= 0) {
-            throw new InvalidDurationTimeException("Продолжительность фильма не может быть отрицательной");
-        }
+        validate.validateForFilm(film);
         film.setId(++generateId);
         films.put(film.getId(), film);
         log.debug("Фильм добавлен {}", film);
@@ -60,19 +47,8 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film refresh(@RequestBody Film film) {
-        if (film.getName().isBlank() || film.getName().isEmpty()) {
-            throw new InvalidNameException("Имя не может быть пустым");
-        }
-        if (film.getName().length() > MAX_LENGTH) {
-            throw new InvalidNameException("Название фильма не может быть больше чем " + MAX_LENGTH + "символов");
-        }
-        if (film.getReleaseDate().isBefore(MIN_DATE_RELEASE)) {
-            throw new ReleaseDateException("Дата релиза фильма не может быть раньше " + MIN_DATE_RELEASE);
-        }
-        if (film.getDuration() <= 0) {
-            throw new InvalidDurationTimeException("Продолжительность фильма не может быть отрицательной");
-        }
+    public Film update(@RequestBody Film film) {
+        validate.validateForFilm(film);
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
         } else {

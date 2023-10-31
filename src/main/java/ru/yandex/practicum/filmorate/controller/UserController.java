@@ -4,12 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.IdNotFoundException;
-import ru.yandex.practicum.filmorate.exception.InvalidBirthdayException;
-import ru.yandex.practicum.filmorate.exception.InvalidLoginException;
-import ru.yandex.practicum.filmorate.exception.InvalidNameException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.validator.Validate;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    Validate validate = new Validate();
     private static final  Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final Map<Long, User> users = new HashMap<>();
@@ -32,18 +30,7 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank() || (!user.getEmail().contains("@"))) {
-            throw new InvalidNameException("Ваш email не может быть пустым или в нем не указан символ '@'");
-        }
-        if (user.getLogin().isBlank() || user.getLogin() == null || user.getLogin().contains(" ")) {
-            throw new InvalidLoginException("Неверный логин");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new InvalidBirthdayException("Дата вашего рождения не может быть в 'будущем'");
-        }
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        }
+        validate.validateForUser(user);
         user.setId(++generateId);
         users.put(user.getId(), user);
         log.debug("Новый пользователь добавлен {}", user);
@@ -52,19 +39,8 @@ public class UserController {
 
 
     @PutMapping
-    public User refresh(@RequestBody User user) {
-        if (user.getEmail().isEmpty() || user.getEmail().isBlank() || (!user.getEmail().contains("@"))) {
-            throw new InvalidNameException("Ваш email не может быть пустым или в нем не указан символ '@'");
-        }
-        if (user.getLogin().isBlank() || user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
-            throw new InvalidLoginException("Неверный логин");
-        }
-        if (user.getName().isBlank() || user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new InvalidBirthdayException("Дата вашего рождения не может быть в 'будущем'");
-        }
+    public User update(@RequestBody User user) {
+        validate.validateForUser(user);
         if (users.containsKey(user.getId())) {
             users.put(user.getId(), user);
         } else {
