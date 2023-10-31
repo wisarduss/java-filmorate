@@ -19,8 +19,8 @@ public class FilmControllerTest {
 
     @Test
     public void shouldReturnFilmWhenCreate() {
-        Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(2003, 5, 10)
-                , 190);
+        Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(2003, 5, 10),
+                190);
 
         filmController.create(film);
         List<Film> films = filmController.findAll();
@@ -30,8 +30,8 @@ public class FilmControllerTest {
 
     @Test
     public void shouldReturnInvalidNameExceptionWhenCreate() {
-        Film film = new Film("", "Крутой фильм", LocalDate.of(2003, 5, 10)
-                , 190);
+        Film film = new Film("", "Крутой фильм", LocalDate.of(2003, 5, 10),
+                190);
 
         InvalidNameException exception = assertThrows(
                 InvalidNameException.class,
@@ -65,8 +65,8 @@ public class FilmControllerTest {
                         "aaaaaaaaaaaaaa" +
                         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
                         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                LocalDate.of(2003, 5, 10)
-                , 190);
+                LocalDate.of(2003, 5, 10),
+                190);
 
         InvalidDescriptionException exception = assertThrows(
                 InvalidDescriptionException.class,
@@ -77,8 +77,8 @@ public class FilmControllerTest {
 
     @Test
     public void shouldReturnReleaseDateExceptionWhenCreate() {
-        Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(1888, 5, 10)
-                , 190);
+        Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(1888, 5, 10),
+                190);
 
         ReleaseDateException exception = assertThrows(
                 ReleaseDateException.class,
@@ -99,8 +99,8 @@ public class FilmControllerTest {
 
     @Test
     public void shouldReturnUpdateFilmWhenUpdate() {
-        Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(2003, 5, 10)
-                , 190);
+        Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(2003, 5, 10),
+                190);
         filmController.create(film);
 
         Film newFilm = new Film(1, "Пираты 2", "Очень крутой фильм",
@@ -111,8 +111,8 @@ public class FilmControllerTest {
 
     @Test
     public void shouldReturnIdNotFoundExceptionWhenUpdate() {
-        Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(2003, 5, 10)
-                , 190);
+        Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(2003, 5, 10),
+                190);
         filmController.create(film);
 
         Film newFilm = new Film(123, "Пираты 2", "Очень крутой фильм",
