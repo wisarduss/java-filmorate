@@ -4,7 +4,6 @@ package ru.yandex.practicum.filmorate.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,20 +12,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import  ru.yandex.practicum.filmorate.validator.Validate;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    @Autowired
-    Validate validate;
 
+    private static final int MAX_LENGTH = 200;
+    private static final LocalDate MIN_DATE_RELEASE = LocalDate.of(1895, 12, 28);
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private final Map<Long, Film> films = new HashMap<>();
     private long generateId = 0;
@@ -40,7 +38,7 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) {
-        validate.validateForFilm(film);
+        validate(film);
         film.setId(++generateId);
         films.put(film.getId(), film);
         log.debug("Фильм добавлен {}", film);
@@ -49,7 +47,7 @@ public class FilmController {
 
     @PutMapping
     public Film update(@RequestBody Film film) {
-        validate.validateForFilm(film);
+        validate(film);
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
         } else {
@@ -61,5 +59,21 @@ public class FilmController {
 
     private long generationId() {
         return generateId++;
+    }
+
+    private void validate(Film film) {
+        if (film.getName() == null || film.getName().isBlank()) {
+            throw new FilmAndUserValidationException("Имя не может быть пустым");
+        }
+        if (film.getDescription().length() > MAX_LENGTH) {
+            throw new FilmAndUserValidationException("Описание фильма не может быть больше чем "
+                    + MAX_LENGTH + " символов");
+        }
+        if (film.getReleaseDate().isBefore(MIN_DATE_RELEASE)) {
+            throw new FilmAndUserValidationException("Дата релиза фильма не может быть раньше " + MIN_DATE_RELEASE);
+        }
+        if (film.getDuration() <= 0) {
+            throw new FilmAndUserValidationException("Продолжительность фильма не может быть отрицательной");
+        }
     }
 }

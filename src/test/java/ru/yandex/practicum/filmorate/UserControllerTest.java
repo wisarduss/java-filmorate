@@ -14,8 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class UserControllerTest {
-    @Autowired
-    UserController userController;
+    UserController userController = new UserController();
 
     @Test
     public void shouldReturnUserWhenCreate() {

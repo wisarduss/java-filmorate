@@ -14,8 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FilmControllerTest {
-    @Autowired
-    FilmController filmController;
+    FilmController filmController = new FilmController();
 
     @Test
     public void shouldReturnFilmWhenCreate() {
