@@ -2,8 +2,9 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.IdNotFoundException;
+import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.Validate;
 
@@ -16,7 +17,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    Validate validate = new Validate();
+
+    @Autowired
+    Validate validate;
     private static final  Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final Map<Long, User> users = new HashMap<>();
@@ -44,7 +47,7 @@ public class UserController {
         if (users.containsKey(user.getId())) {
             users.put(user.getId(), user);
         } else {
-            throw new IdNotFoundException("Пользователь не найден");
+            throw new FilmAndUserValidationException("Пользователь не найден");
         }
         log.debug("Пользователь обновлен {}", user);
         return user;

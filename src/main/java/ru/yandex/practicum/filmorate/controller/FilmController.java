@@ -4,13 +4,14 @@ package ru.yandex.practicum.filmorate.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-import ru.yandex.practicum.filmorate.exception.IdNotFoundException;
+import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import  ru.yandex.practicum.filmorate.validator.Validate;
 
@@ -23,7 +24,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    Validate validate = new Validate();
+    @Autowired
+    Validate validate;
 
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private final Map<Long, Film> films = new HashMap<>();
@@ -51,7 +53,7 @@ public class FilmController {
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
         } else {
-            throw new IdNotFoundException("Фильм не найден");
+            throw new FilmAndUserValidationException("Фильм не найден");
         }
         log.debug("Фильм обновлен {}", film);
         return film;

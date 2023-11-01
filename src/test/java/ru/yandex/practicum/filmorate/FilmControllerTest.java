@@ -1,11 +1,10 @@
 package ru.yandex.practicum.filmorate;
 
+
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.exception.IdNotFoundException;
-import ru.yandex.practicum.filmorate.exception.InvalidDescriptionException;
-import ru.yandex.practicum.filmorate.exception.InvalidNameException;
-import ru.yandex.practicum.filmorate.exception.ReleaseDateException;
+import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,7 +14,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FilmControllerTest {
-    FilmController filmController = new FilmController();
+    @Autowired
+    FilmController filmController;
 
     @Test
     public void shouldReturnFilmWhenCreate() {
@@ -33,8 +33,8 @@ public class FilmControllerTest {
         Film film = new Film("", "Крутой фильм", LocalDate.of(2003, 5, 10),
                 190);
 
-        InvalidNameException exception = assertThrows(
-                InvalidNameException.class,
+        FilmAndUserValidationException exception = assertThrows(
+                FilmAndUserValidationException.class,
                 () -> filmController.create(film)
         );
         assertEquals("Имя не может быть пустым", exception.getMessage());
@@ -68,8 +68,8 @@ public class FilmControllerTest {
                 LocalDate.of(2003, 5, 10),
                 190);
 
-        InvalidDescriptionException exception = assertThrows(
-                InvalidDescriptionException.class,
+        FilmAndUserValidationException exception = assertThrows(
+                FilmAndUserValidationException.class,
                 () -> filmController.create(film)
         );
         assertEquals("Описание фильма не может быть больше чем 200 символов", exception.getMessage());
@@ -80,8 +80,8 @@ public class FilmControllerTest {
         Film film = new Film("Пираты", "Крутой фильм", LocalDate.of(1888, 5, 10),
                 190);
 
-        ReleaseDateException exception = assertThrows(
-                ReleaseDateException.class,
+        FilmAndUserValidationException exception = assertThrows(
+                FilmAndUserValidationException.class,
                 () -> filmController.create(film)
         );
         assertEquals("Дата релиза фильма не может быть раньше 1895-12-28", exception.getMessage());
@@ -90,8 +90,8 @@ public class FilmControllerTest {
     @Test
     public void shouldReturnInvalidNameExceptionWhenCreateWithEmptyFilm() {
         Film film = new Film();
-        InvalidNameException exception = assertThrows(
-                InvalidNameException.class,
+        FilmAndUserValidationException exception = assertThrows(
+                FilmAndUserValidationException.class,
                 () -> filmController.create(film)
         );
         assertEquals("Имя не может быть пустым", exception.getMessage());
@@ -118,8 +118,8 @@ public class FilmControllerTest {
         Film newFilm = new Film(123, "Пираты 2", "Очень крутой фильм",
                 LocalDate.of(2003, 5, 10), 210);
 
-        IdNotFoundException exception = assertThrows(
-                IdNotFoundException.class,
+        FilmAndUserValidationException exception = assertThrows(
+                FilmAndUserValidationException.class,
                 () -> filmController.update(newFilm)
         );
         assertEquals("Фильм не найден", exception.getMessage());
