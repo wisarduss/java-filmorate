@@ -2,9 +2,17 @@ package ru.yandex.practicum.filmorate;
 
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
+import ru.yandex.practicum.filmorate.exception.IncorrectIdException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,7 +21,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FilmControllerTest {
-    FilmController filmController = new FilmController();
+
+    FilmStorage filmStorage = new InMemoryFilmStorage();
+    UserStorage userStorage = new InMemoryUserStorage();
+    FilmService filmService = new FilmService(filmStorage,userStorage);
+    FilmController filmController = new FilmController(filmService,filmStorage);
 
     @Test
     public void shouldReturnFilmWhenCreate() {
@@ -116,8 +128,8 @@ public class FilmControllerTest {
         Film newFilm = new Film(123, "Пираты 2", "Очень крутой фильм",
                 LocalDate.of(2003, 5, 10), 210);
 
-        FilmAndUserValidationException exception = assertThrows(
-                FilmAndUserValidationException.class,
+        IncorrectIdException exception = assertThrows(
+                IncorrectIdException.class,
                 () -> filmController.update(newFilm)
         );
         assertEquals("Фильм не найден", exception.getMessage());

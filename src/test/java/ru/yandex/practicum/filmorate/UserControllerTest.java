@@ -7,13 +7,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
+import ru.yandex.practicum.filmorate.exception.IncorrectIdException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class UserControllerTest {
-    UserController userController = new UserController();
+    UserStorage userStorage = new InMemoryUserStorage();
+    UserService userService = new UserService(userStorage);
+    UserController userController = new UserController(userStorage, userService);
+
 
     @Test
     public void shouldReturnUserWhenCreate() {
@@ -127,8 +134,8 @@ public class UserControllerTest {
         User newUser = new User(123, "qwerty@mail.ru", "postaground", "Max",
                 LocalDate.of(2003, 5, 10));
 
-        FilmAndUserValidationException exception = assertThrows(
-                FilmAndUserValidationException.class,
+        IncorrectIdException exception = assertThrows(
+                IncorrectIdException.class,
                 () -> userController.update(newUser)
         );
         assertEquals("Пользователь не найден", exception.getMessage());
