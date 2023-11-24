@@ -19,7 +19,7 @@ import java.util.List;
 public class UserControllerTest {
     UserStorage userStorage = new InMemoryUserStorage();
     UserService userService = new UserService(userStorage);
-    UserController userController = new UserController(userStorage, userService);
+    UserController userController = new UserController(userService);
 
 
     @Test

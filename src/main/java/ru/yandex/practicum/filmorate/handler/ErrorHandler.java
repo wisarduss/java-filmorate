@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.handler;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -13,7 +12,6 @@ import java.io.StringWriter;
 
 @RestControllerAdvice
 public class ErrorHandler {
-
     private String getStackTrace(Exception e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));

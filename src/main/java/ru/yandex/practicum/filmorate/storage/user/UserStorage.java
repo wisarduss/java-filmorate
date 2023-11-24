@@ -6,19 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserStorage {
-    List<User> findAllUsers();
+    List<User> findUsers();
 
-    User save(User user);
+    User create(User user);
+
+    User update(User user);
 
     Map<Long, User> getUsers();
 
     User getById(long id);
-
-    Integer getSize();
-
-    Boolean isPresent(User user);
-
-    List<User> findCommonFriends(User user, User otherUser);
-
-    User generationId(User user);
 }

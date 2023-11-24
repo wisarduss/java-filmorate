@@ -11,17 +11,9 @@ public interface FilmStorage {
 
     Map<Long, Film> getFilms();
 
-    Film save(Film film);
+    Film update(Film film);
 
     Film getById(long id);
 
-    Integer getSize();
-
-    Boolean isPresent(Film film);
-
-    List<Film> bestByLike(Long count);
-
-    Film generationId(Film film);
-
-
+    Film create(Film film);
 }

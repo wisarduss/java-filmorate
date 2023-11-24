@@ -1,19 +1,20 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.exception.IncorrectIdException;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Comparator;
-import java.util.stream.Collectors;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
-
+    private static final int MAX_LENGTH = 200;
+    private static final LocalDate MIN_DATE_RELEASE = LocalDate.of(1895, 12, 28);
     private final Map<Long, Film> films = new HashMap<>();
     private long generateId = 0;
 
@@ -28,6 +29,25 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
+    public Film create(Film film) {
+        validate(film);
+        film.setId(++generateId);
+        films.put(film.getId(), film);
+        return film;
+    }
+
+    @Override
+    public Film update(Film film) {
+        validate(film);
+        if (films.containsKey(film.getId())) {
+            films.put(film.getId(), film);
+        } else {
+            throw new IncorrectIdException("Фильм не найден");
+        }
+        return film;
+    }
+
+    @Override
     public Film getById(long id) {
         if (films.containsKey(id)) {
             return films.get(id);
@@ -36,32 +56,19 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
     }
 
-    @Override
-    public List<Film> bestByLike(Long count) {
-        return findFilms().stream()
-                .sorted(Comparator.comparing(film -> film.getLikes().size(), Comparator.reverseOrder()))
-                .limit(count).collect(Collectors.toList());
-    }
-
-    @Override
-    public Film save(Film film) {
-        films.put(film.getId(), film);
-        return film;
-    }
-
-    @Override
-    public Integer getSize() {
-        return films.size();
-    }
-
-    @Override
-    public Boolean isPresent(Film film) {
-        return films.containsKey(film.getId());
-    }
-
-    @Override
-    public Film generationId(Film film) {
-        film.setId(++generateId);
-        return film;
+    private void validate(Film film) {
+        if (film.getName() == null || film.getName().isBlank()) {
+            throw new FilmAndUserValidationException("Имя не может быть пустым");
+        }
+        if (film.getDescription().length() > MAX_LENGTH) {
+            throw new FilmAndUserValidationException("Описание фильма не может быть больше чем "
+                    + MAX_LENGTH + " символов");
+        }
+        if (film.getReleaseDate().isBefore(MIN_DATE_RELEASE)) {
+            throw new FilmAndUserValidationException("Дата релиза фильма не может быть раньше " + MIN_DATE_RELEASE);
+        }
+        if (film.getDuration() <= 0) {
+            throw new FilmAndUserValidationException("Продолжительность фильма не может быть отрицательной");
+        }
     }
 }

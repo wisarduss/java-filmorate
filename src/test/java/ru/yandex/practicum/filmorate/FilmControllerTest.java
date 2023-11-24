@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate;
 
-
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
@@ -19,11 +18,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FilmControllerTest {
-
     FilmStorage filmStorage = new InMemoryFilmStorage();
     UserStorage userStorage = new InMemoryUserStorage();
-    FilmService filmService = new FilmService(filmStorage,userStorage);
-    FilmController filmController = new FilmController(filmService,filmStorage);
+    FilmService filmService = new FilmService(filmStorage, userStorage);
+    FilmController filmController = new FilmController(filmService);
 
     @Test
     public void shouldReturnFilmWhenCreate() {

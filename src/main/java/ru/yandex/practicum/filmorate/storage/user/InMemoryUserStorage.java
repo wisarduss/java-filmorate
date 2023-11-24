@@ -1,9 +1,11 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.exception.IncorrectIdException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +17,27 @@ public class InMemoryUserStorage implements UserStorage {
     private long generateId = 0;
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> findUsers() {
         return new ArrayList<>(users.values());
+    }
+
+    @Override
+    public User create(User user) {
+        validate(user);
+        user.setId(++generateId);
+        users.put(user.getId(), user);
+        return user;
+    }
+
+    @Override
+    public User update(User user) {
+        validate(user);
+        if (users.containsKey(user.getId())) {
+            users.put(user.getId(), user);
+        } else {
+            throw new IncorrectIdException("Пользователь не найден");
+        }
+        return user;
     }
 
     @Override
@@ -33,38 +54,18 @@ public class InMemoryUserStorage implements UserStorage {
         }
     }
 
-    @Override
-    public User save(User user) {
-        users.put(user.getId(), user);
-        return user;
-    }
-
-    @Override
-    public Integer getSize() {
-        return users.size();
-    }
-
-    @Override
-    public Boolean isPresent(User user) {
-        return users.containsKey(user.getId());
-    }
-
-    @Override
-    public User generationId(User user) {
-        user.setId(++generateId);
-        return user;
-    }
-
-    @Override
-    public List<User> findCommonFriends(User user, User otherUser) {
-        List<User> commonFriends = new ArrayList<>();
-        for (Long friend : user.getFriends()) {
-            if (otherUser.getFriends().contains(friend)) {
-                commonFriends.add(getById(friend));
-            }
+    private void validate(User user) {
+        if (user.getEmail() == null || user.getEmail().isBlank() || (!user.getEmail().contains("@"))) {
+            throw new FilmAndUserValidationException("Ваш email не может быть пустым или в нем не указан символ '@'");
         }
-        return commonFriends;
+        if (user.getLogin().isBlank() || user.getLogin() == null || user.getLogin().contains(" ")) {
+            throw new FilmAndUserValidationException("Неверный логин");
+        }
+        if (user.getBirthday().isAfter(LocalDate.now())) {
+            throw new FilmAndUserValidationException("Дата вашего рождения не может быть в 'будущем'");
+        }
+        if (user.getName() == null || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
     }
-
-
 }
