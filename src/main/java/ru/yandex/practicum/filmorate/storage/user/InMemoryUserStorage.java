@@ -32,25 +32,19 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User update(User user) {
         validate(user);
-        if (users.containsKey(user.getId())) {
-            users.put(user.getId(), user);
-        } else {
+        if (!users.containsKey(user.getId())) {
             throw new IncorrectIdException("Пользователь не найден");
         }
+        users.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public Map<Long, User> getUsers() {
-        return users;
-    }
-
-    @Override
     public User getById(long id) {
-        if (users.containsKey(id)) {
-            return users.get(id);
-        } else {
+        if (!users.containsKey(id)) {
             throw new IncorrectIdException("Пользователя с id = " + id + " не существует");
+        } else {
+            return users.get(id);
         }
     }
 

@@ -24,11 +24,6 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Map<Long, Film> getFilms() {
-        return films;
-    }
-
-    @Override
     public Film create(Film film) {
         validate(film);
         film.setId(++generateId);

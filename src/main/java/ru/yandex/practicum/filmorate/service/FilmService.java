@@ -4,15 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.IncorrectIdException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Map;
 
 @Service
 public class FilmService {
@@ -43,27 +42,17 @@ public class FilmService {
     }
 
     public void addNewLike(long filmId, long userId) {
-        Map<Long, Film> allFilms = filmStorage.getFilms();
-        if (!allFilms.containsKey(filmId)) {
-            throw new IncorrectIdException("Фильма с filmId " + filmId + " не существует");
-        }
-        if (!userStorage.getUsers().containsKey(userId)) {
-            throw new IncorrectIdException("пользователя с userId " + userId + " не существует");
-        }
+        Film film = filmStorage.getById(filmId);
+        User user = userStorage.getById(userId);
         log.info("пользователь с userId=" + userId + " поставил like фильму с filmId=" + filmId);
-        allFilms.get(filmId).getLikes().add(userId);
+        film.getLikes().add(user.getId());
     }
 
     public void deleteLike(long filmId, long userId) {
-        Map<Long, Film> allFilms = filmStorage.getFilms();
-        if (!allFilms.containsKey(filmId)) {
-            throw new IncorrectIdException("Фильма с filmId " + filmId + " не существует");
-        }
-        if (!userStorage.getUsers().containsKey(userId)) {
-            throw new IncorrectIdException("пользователя с userId " + userId + " не существует");
-        }
+        Film film = filmStorage.getById(filmId);
+        User user = userStorage.getById(userId);
         log.info("пользователь с userId=" + userId + " удалил like фильму с filmId=" + filmId);
-        allFilms.get(filmId).getLikes().remove(userId);
+        film.getLikes().remove(user.getId());
     }
 
     public List<Film> bestByLike(Long count) {
