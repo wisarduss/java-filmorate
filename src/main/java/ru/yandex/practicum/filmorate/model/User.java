@@ -25,7 +25,6 @@ public class User {
     private String name;
     @NonNull
     private LocalDate birthday;
-
     public User(long id, @NonNull String email,
                 @NonNull String login, @NonNull String name, @NonNull LocalDate birthday) {
         this.id = id;

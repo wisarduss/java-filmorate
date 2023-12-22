@@ -25,6 +25,8 @@ public class Film {
     @NonNull
     private long duration;
     private Set<Long> likes = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
+    private Rating rating;
 
     public Film(long id, @NonNull String name, @NonNull String description, @NonNull LocalDate releaseDate, @NonNull long duration) {
         this.id = id;
