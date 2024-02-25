@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface LikeStorage {
     Like create(Like like);
 
-    void delete(Long LikeId);
+    void delete(Long likeId);
 
     List<Like> getByFilmId(Film film);
 
