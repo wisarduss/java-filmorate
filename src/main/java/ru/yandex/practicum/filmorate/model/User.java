@@ -33,7 +33,7 @@ public class User {
     @NonNull
     @PastOrPresent
     private LocalDate birthday;
-    
+
     public User(long id, @NonNull String email,
                 @NonNull String login, @NonNull String name, @NonNull LocalDate birthday) {
         this.id = id;
@@ -48,5 +48,3 @@ public class User {
         return this;
     }
 }
-
-
