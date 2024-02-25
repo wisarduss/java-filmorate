@@ -18,12 +18,7 @@ import ru.yandex.practicum.filmorate.util.statements.FilmPreparedStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -117,7 +112,7 @@ public class FilmDbStorage implements FilmStorage {
             }
             return film;
         } catch (EmptyResultDataAccessException e) {
-            throw new DataNotFoundException("Фильм с id = " + id + " не найден", HttpStatus.NOT_FOUND);
+            throw new DataNotFoundException("Фильм с id = " + id + " не найден",HttpStatus.NOT_FOUND);
         }
     }
 
