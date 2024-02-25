@@ -34,9 +34,9 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User create(User user) {
         validate(user);
-        String sql = "INSERT INTO users (email, login, name, birthday)" +
+        String sqlQuery = "INSERT INTO users (email, login, name, birthday)" +
                 " VALUES (?, ?, ?, ?);";
-        long userId = databaseUtil.insertAndReturnId(sql, new UserPreparedStatementSetter(user));
+        long userId = databaseUtil.insertAndReturnId(sqlQuery, new UserPreparedStatementSetter(user));
         user.setId(userId);
         return user;
     }
