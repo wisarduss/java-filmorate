@@ -82,7 +82,7 @@ public class FriendsDbStorageTest {
         friend.setFriendStatus(FriendStatus.UNCONFIRMED);
         friendsDbStorage.create(friend);
 
-        List<Friend> FriendsWithOneItem = friendsDbStorage.getById(user1);
+        List<Friend> friendsWithOneItem = friendsDbStorage.getById(user1);
 
         Friend friendEntry2 = new Friend();
         friendEntry2.setUserId(user3.getId());
@@ -90,11 +90,11 @@ public class FriendsDbStorageTest {
         friendEntry2.setFriendStatus(FriendStatus.CONFIRMED);
         friendsDbStorage.create(friendEntry2);
 
-        List<Friend> FriendsWithTwoItems = friendsDbStorage.getById(user1);
+        List<Friend> friendsWithTwoItems = friendsDbStorage.getById(user1);
 
         assertEquals(emptySavedFriends.size(), 0);
-        assertEquals(FriendsWithOneItem.size(), 1);
-        assertEquals(FriendsWithTwoItems.size(), 2);
+        assertEquals(friendsWithOneItem.size(), 1);
+        assertEquals(friendsWithTwoItems.size(), 2);
     }
 
     @Test
@@ -104,9 +104,9 @@ public class FriendsDbStorageTest {
         friend.setFriendId(user2.getId());
         friend.setFriendStatus(FriendStatus.UNCONFIRMED);
         friendsDbStorage.create(friend);
-        Optional<Friend> FriendEntry = friendsDbStorage.getByIdUserAndFriend(user1, user2);
+        Optional<Friend> friendEntry = friendsDbStorage.getByIdUserAndFriend(user1, user2);
 
-        friendsDbStorage.delete(FriendEntry.get().getId());
+        friendsDbStorage.delete(friendEntry.get().getId());
 
         assertTrue(friendsDbStorage.getByIdUserAndFriend(user1, user2).isEmpty());
     }
