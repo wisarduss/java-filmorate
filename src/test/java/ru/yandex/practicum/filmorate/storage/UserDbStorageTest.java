@@ -66,7 +66,7 @@ public class UserDbStorageTest {
         User user = new User();
         user.setName("testName");
         user.setEmail("test@gmail.com");
-        user.setLogin("wisardus");
+        user.setLogin("wisarduss");
         user.setBirthday(LocalDate.of(2003, 5, 10));
         User savedUser = userDbStorage.create(user);
 
