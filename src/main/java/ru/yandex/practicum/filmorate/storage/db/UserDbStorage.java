@@ -16,7 +16,6 @@ import ru.yandex.practicum.filmorate.util.statements.UserPreparedStatement;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Repository
 @RequiredArgsConstructor
