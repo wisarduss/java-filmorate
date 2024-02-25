@@ -12,7 +12,7 @@ import ru.yandex.practicum.filmorate.model.FriendStatus;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.friends.FriendsStorage;
 import ru.yandex.practicum.filmorate.util.DatabaseUtil;
-import ru.yandex.practicum.filmorate.util.statements.FriendPreparedStatement;
+import ru.yandex.practicum.filmorate.util.statement.FriendPreparedStatementSetter;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public class FriendsDbStorage implements FriendsStorage {
     public Friend create(Friend friend) {
         String sqlQuery = "INSERT INTO friends (user_id, friend_id, friend_status) " +
                 "VALUES (?,?,?)";
-        long friendId = databaseUtil.insertAndReturnId(sqlQuery, new FriendPreparedStatement(friend));
+        long friendId = databaseUtil.insertAndReturnId(sqlQuery, new FriendPreparedStatementSetter(friend));
         friend.setId(friendId);
         return friend;
     }

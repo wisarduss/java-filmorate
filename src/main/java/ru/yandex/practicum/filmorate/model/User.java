@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class User {
-    private long id;
+    private Long id;
     private Set<Long> friends = new HashSet<>();
     @NonNull
     @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
@@ -30,4 +30,7 @@ public class User {
     @PastOrPresent
     private LocalDate birthday;
 
+    public void setId(long id) {
+        this.id = id;
+    }
 }

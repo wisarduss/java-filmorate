@@ -12,6 +12,7 @@ import ru.yandex.practicum.filmorate.storage.db.UserDbStorage;
 import ru.yandex.practicum.filmorate.util.DatabaseUtil;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,8 +37,9 @@ public class UserDbStorageTest {
         user.setLogin("wisardus");
         user.setBirthday(LocalDate.of(2003, 5, 10));
         userDbStorage.create(user);
+        List<User> users = userDbStorage.findUsers();
+        User savedUser = users.get(0);
 
-        User savedUser = userDbStorage.getById(1);
         assertEquals(savedUser.getName(), user.getName());
         assertEquals(savedUser.getLogin(), user.getLogin());
         assertEquals(savedUser.getBirthday(), user.getBirthday());
@@ -56,7 +58,8 @@ public class UserDbStorageTest {
         savedUser.setName("testNameqwerty");
         savedUser.setEmail("test2@gmail.com");
         userDbStorage.update(savedUser);
-        User savedUserAfterChange = userDbStorage.getById(1);
+        List<User> users = userDbStorage.findUsers();
+        User savedUserAfterChange = users.get(0);
         assertEquals(savedUserAfterChange.getName(), "testNameqwerty");
         assertEquals(savedUserAfterChange.getEmail(), "test2@gmail.com");
     }
@@ -88,7 +91,7 @@ public class UserDbStorageTest {
         user.setBirthday(LocalDate.of(2003, 5, 10));
         userDbStorage.create(user);
 
-        User savedUser = userDbStorage.getById(1);
+        User savedUser = userDbStorage.getById(6);
         assertEquals(savedUser.getName(), user.getName());
         assertEquals(savedUser.getEmail(), user.getEmail());
     }

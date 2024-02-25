@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.util.statements;
+package ru.yandex.practicum.filmorate.util.statement;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

@@ -2,8 +2,7 @@ package ru.yandex.practicum.filmorate.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import org.springframework.jdbc.core.PreparedStatementSetter;
+import ru.yandex.practicum.filmorate.util.statement.PreparedStatementSetter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;

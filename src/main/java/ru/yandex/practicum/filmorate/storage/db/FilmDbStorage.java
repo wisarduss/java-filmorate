@@ -13,7 +13,7 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.util.DatabaseUtil;
-import ru.yandex.practicum.filmorate.util.statements.FilmPreparedStatement;
+import ru.yandex.practicum.filmorate.util.statement.FilmPreparedStatementSetter;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -121,7 +121,7 @@ public class FilmDbStorage implements FilmStorage {
         validate(film);
         String sqlQuery = "INSERT INTO films (name, description, release_date, duration, mpa_id)" +
                 " VALUES (?, ?, ?, ?, ?);";
-        int filmId = databaseUtil.insertAndReturnId(sqlQuery, new FilmPreparedStatement(film));
+        int filmId = databaseUtil.insertAndReturnId(sqlQuery, new FilmPreparedStatementSetter(film));
         film.setId(filmId);
 
         if (!film.getGenres().isEmpty()) {

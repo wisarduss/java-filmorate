@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.util.DatabaseUtil;
-import ru.yandex.practicum.filmorate.util.statements.UserPreparedStatement;
+import ru.yandex.practicum.filmorate.util.statement.UserPreparedStatementSetter;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -36,10 +36,11 @@ public class UserDbStorage implements UserStorage {
         validate(user);
         String sql = "INSERT INTO users (email, login, name, birthday)" +
                 " VALUES (?, ?, ?, ?);";
-        long userId = databaseUtil.insertAndReturnId(sql, new UserPreparedStatement(user));
+        long userId = databaseUtil.insertAndReturnId(sql, new UserPreparedStatementSetter(user));
         user.setId(userId);
         return user;
     }
+
 
     @Override
     public User update(User user) {

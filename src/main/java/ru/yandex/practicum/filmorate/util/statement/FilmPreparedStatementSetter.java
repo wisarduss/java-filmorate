@@ -1,15 +1,15 @@
-package ru.yandex.practicum.filmorate.util.statements;
+package ru.yandex.practicum.filmorate.util.statement;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.util.statement.PreparedStatementSetter;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @RequiredArgsConstructor
-public class FilmPreparedStatement implements PreparedStatementSetter {
+public class FilmPreparedStatementSetter implements PreparedStatementSetter {
     private final Film film;
 
     public void setValues(PreparedStatement ps) throws SQLException {
