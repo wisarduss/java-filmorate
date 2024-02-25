@@ -31,7 +31,7 @@ public class LikeDbStorageTest {
     private LikeDbStorage likeDbStorage;
     private User user;
     private User user2;
-    private Film film;;
+    private Film film;
 
     @BeforeEach
     public void setUp() {
@@ -116,5 +116,4 @@ public class LikeDbStorageTest {
         film.setGenres(new HashSet<>());
         return filmDbStorage.create(film);
     }
-
 }
