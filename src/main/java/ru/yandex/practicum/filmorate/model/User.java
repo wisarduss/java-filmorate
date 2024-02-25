@@ -15,9 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor(force = true)
-@RequiredArgsConstructor
-@SuperBuilder
+@NoArgsConstructor
 public class User {
     private long id;
     private Set<Long> friends = new HashSet<>();
@@ -34,17 +32,4 @@ public class User {
     @PastOrPresent
     private LocalDate birthday;
 
-    public User(long id, @NonNull String email,
-                @NonNull String login, @NonNull String name, @NonNull LocalDate birthday) {
-        this.id = id;
-        this.email = email;
-        this.login = login;
-        this.name = name;
-        this.birthday = birthday;
-    }
-
-    public User setId(Long id) {
-        this.id = id;
-        return this;
-    }
 }

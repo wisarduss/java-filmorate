@@ -16,6 +16,7 @@ import ru.yandex.practicum.filmorate.util.statements.UserPreparedStatement;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Repository
 @RequiredArgsConstructor
@@ -64,7 +65,7 @@ public class UserDbStorage implements UserStorage {
         try {
             return jdbcTemplate.queryForObject(sqlQuery, getUserMapper, id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DataNotFoundException("Пользователь с id = " + id + " не найден",HttpStatus.NOT_FOUND);
+            throw new DataNotFoundException("Пользователь с id = " + id + " не найден");
         }
     }
 

@@ -16,10 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor(force = true)
-@AllArgsConstructor
-@RequiredArgsConstructor
-@SuperBuilder
+@NoArgsConstructor
 public class Film {
     private long id;
     @NonNull
@@ -37,14 +34,4 @@ public class Film {
     private Set<Long> likes = new HashSet<>();
     private Set<Genre> genres = new HashSet<>();
     private Mpa mpa;
-
-    public Film(long id, @NonNull String name, @NonNull String description,
-                @NonNull LocalDate releaseDate, @NonNull long duration) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.releaseDate = releaseDate;
-        this.duration = duration;
-    }
-
 }
