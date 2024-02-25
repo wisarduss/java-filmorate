@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.model.Like;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
 import ru.yandex.practicum.filmorate.util.DatabaseUtil;
-import ru.yandex.practicum.filmorate.util.statements.LikePreparedStatement;
+import ru.yandex.practicum.filmorate.util.statement.LikePreparedStatementSetter;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class LikeDbStorage implements LikeStorage {
     public Like create(Like like) {
         String sqlQuery = "INSERT INTO likes (user_id,film_id) " +
                 "VALUES (?,?)";
-        long likeId = databaseUtil.insertAndReturnId(sqlQuery, new LikePreparedStatement(like));
+        long likeId = databaseUtil.insertAndReturnId(sqlQuery, new LikePreparedStatementSetter(like));
         like.setId(likeId);
         return like;
     }

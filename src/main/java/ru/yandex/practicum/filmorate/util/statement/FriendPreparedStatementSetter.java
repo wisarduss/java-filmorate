@@ -1,14 +1,14 @@
-package ru.yandex.practicum.filmorate.util.statements;
+package ru.yandex.practicum.filmorate.util.statement;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import ru.yandex.practicum.filmorate.model.Friend;
+import ru.yandex.practicum.filmorate.util.statement.PreparedStatementSetter;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @RequiredArgsConstructor
-public class FriendPreparedStatement implements PreparedStatementSetter {
+public class FriendPreparedStatementSetter implements PreparedStatementSetter {
     private final Friend friend;
 
     public void setValues(PreparedStatement ps) throws SQLException {
