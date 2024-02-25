@@ -57,7 +57,7 @@ public class FilmDbStorageTest {
         film.setGenres(new HashSet<>());
         filmDbStorage.create(film);
 
-        Film savedFilm = filmDbStorage.getById(6);
+        Film savedFilm = filmDbStorage.getById(3);
         assertEquals(savedFilm.getName(), film.getName());
         assertEquals(savedFilm.getDescription(), film.getDescription());
         assertEquals(savedFilm.getDuration(), film.getDuration());
@@ -81,7 +81,7 @@ public class FilmDbStorageTest {
         savedFilm.setMpa(mpa2);
         savedFilm.setDuration(5);
         filmDbStorage.update(savedFilm);
-        Film savedFilmAfterChange = filmDbStorage.getById(8);
+        Film savedFilmAfterChange = filmDbStorage.getById(5);
 
         assertEquals(savedFilmAfterChange.getGenres(), new HashSet<>(Collections.singletonList(genre1)));
         assertEquals(savedFilmAfterChange.getMpa(), mpa2);
@@ -111,11 +111,11 @@ public class FilmDbStorageTest {
         film.setGenres(new HashSet<>());
         filmDbStorage.create(film);
 
-        Film savedFilm = filmDbStorage.getById(7);
+        Film savedFilm = filmDbStorage.getById(4);
         filmDbStorage.delete(savedFilm.getId());
 
         assertThrows(DataNotFoundException.class, () -> {
-            filmDbStorage.getById(7);
+            filmDbStorage.getById(4);
         });
         assertThrows(DataNotFoundException.class, () -> {
             filmDbStorage.delete(2L);
@@ -133,7 +133,7 @@ public class FilmDbStorageTest {
         film.setGenres(new HashSet<>());
         filmDbStorage.create(film);
 
-        Film savedFilm = filmDbStorage.getById(9);
+        Film savedFilm = filmDbStorage.getById(6);
 
         assertEquals(savedFilm.getName(), film.getName());
         assertEquals(savedFilm.getDescription(), film.getDescription());
