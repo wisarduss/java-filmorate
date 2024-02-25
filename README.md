@@ -1,8 +1,7 @@
 # java-filmorate
-![ER_diagram](https://github.com/wisarduss/java-filmorate/assets/137425463/c58074a1-9cb4-4085-beae-16a8ecd1f4f2)
+![ER_diagram](![image](https://github.com/wisarduss/java-filmorate/assets/137425463/b89978e4-8dd5-4fa2-9480-31f6b2586278)
+)
 
-# example 
-![image](https://github.com/wisarduss/java-filmorate/assets/137425463/9fe7eed2-961d-471b-b778-77189c9ab7db)
 
 
  
