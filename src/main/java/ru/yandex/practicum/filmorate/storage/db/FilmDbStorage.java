@@ -38,7 +38,7 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public List<Film> findFilms() {
         String sqlQuery = "SELECT" +
-                "  f.*, " +
+                " f.*, " +
                 "  m.id as mpa_id, " +
                 "  m.name as mpa_name, " +
                 "  g.id as genre_id, " +
