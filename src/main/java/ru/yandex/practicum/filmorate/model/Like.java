@@ -19,4 +19,5 @@ public class Like {
     private Long userId;
     @NonNull
     private Long filmId;
+
 }
