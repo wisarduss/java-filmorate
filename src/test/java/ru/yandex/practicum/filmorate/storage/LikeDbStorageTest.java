@@ -81,18 +81,18 @@ public class LikeDbStorageTest {
         newLike.setFilmId(film.getId());
         likeDbStorage.create(newLike);
 
-        List<Like> LikesWithOneItem = likeDbStorage.getByFilmId(film);
+        List<Like> likesWithOneItem = likeDbStorage.getByFilmId(film);
 
         Like newLike2 = new Like();
         newLike2.setUserId(user2.getId());
         newLike2.setFilmId(film.getId());
         likeDbStorage.create(newLike2);
 
-        List<Like> LikesWithTwoItems = likeDbStorage.getByFilmId(film);
+        List<Like> likesWithTwoItems = likeDbStorage.getByFilmId(film);
 
         assertEquals(emptyLikes.size(), 0);
-        assertEquals(LikesWithOneItem.size(), 1);
-        assertEquals(LikesWithTwoItems.size(), 2);
+        assertEquals(likesWithOneItem.size(), 1);
+        assertEquals(likesWithTwoItems.size(), 2);
     }
 
     private User createUser(UserDbStorage userDbStorage) {
