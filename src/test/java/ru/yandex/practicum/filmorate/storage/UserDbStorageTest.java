@@ -37,7 +37,7 @@ public class UserDbStorageTest {
         user.setBirthday(LocalDate.of(2003, 5, 10));
         userDbStorage.create(user);
 
-        User savedUser = userDbStorage.getById(3);
+        User savedUser = userDbStorage.getById(1);
         assertEquals(savedUser.getName(), user.getName());
         assertEquals(savedUser.getLogin(), user.getLogin());
         assertEquals(savedUser.getBirthday(), user.getBirthday());
@@ -56,7 +56,7 @@ public class UserDbStorageTest {
         savedUser.setName("testNameqwerty");
         savedUser.setEmail("test2@gmail.com");
         userDbStorage.update(savedUser);
-        User savedUserAfterChange = userDbStorage.getById(5);
+        User savedUserAfterChange = userDbStorage.getById(1);
         assertEquals(savedUserAfterChange.getName(), "testNameqwerty");
         assertEquals(savedUserAfterChange.getEmail(), "test2@gmail.com");
     }
@@ -88,7 +88,7 @@ public class UserDbStorageTest {
         user.setBirthday(LocalDate.of(2003, 5, 10));
         userDbStorage.create(user);
 
-        User savedUser = userDbStorage.getById(6);
+        User savedUser = userDbStorage.getById(1);
         assertEquals(savedUser.getName(), user.getName());
         assertEquals(savedUser.getEmail(), user.getEmail());
     }
