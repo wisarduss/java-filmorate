@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +12,12 @@ import ru.yandex.practicum.filmorate.service.GenreService;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/genres")
 @RequiredArgsConstructor
 public class GenreController {
     private final GenreService service;
-    private static final Logger log = LoggerFactory.getLogger(GenreController.class);
 
     @GetMapping
     public List<Genre> getAll() {
@@ -29,7 +28,7 @@ public class GenreController {
 
     @GetMapping("/{id}")
     public Genre getGenreById(@PathVariable long id) {
-        log.info("Жанр с id=" + id + "получен");
+        log.info("Жанр с id = {} не найден", id);
         return service.getGenreById(id);
     }
 }

@@ -1,8 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +11,12 @@ import ru.yandex.practicum.filmorate.service.MpaService;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/mpa")
 @RequiredArgsConstructor
 public class MpaController {
     private final MpaService mpaService;
-    private static final Logger log = LoggerFactory.getLogger(MpaController.class);
 
     @GetMapping
     public List<Mpa> getAll() {
@@ -29,6 +28,7 @@ public class MpaController {
     @GetMapping("/{id}")
     public Mpa getMpaById(@PathVariable long id) {
         log.info("Рейтинг с id=" + id + "получен");
+        log.info("Рейтинг с id = {} получен", id);
         return mpaService.getMpaById(id);
     }
 

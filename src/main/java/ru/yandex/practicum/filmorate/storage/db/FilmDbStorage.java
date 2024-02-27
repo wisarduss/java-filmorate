@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
-import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
@@ -68,7 +67,6 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film update(Film film) {
-        validate(film);
         long filmId = film.getId();
         String sqlQuery = "UPDATE films SET name = ?, description = ?, release_date = ?," +
                 " duration = ?, mpa_id = ?" +
@@ -118,7 +116,6 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film create(Film film) {
-        validate(film);
         String sqlQuery = "INSERT INTO films (name, description, release_date, duration, mpa_id)" +
                 " VALUES (?, ?, ?, ?, ?);";
         int filmId = databaseUtil.insertAndReturnId(sqlQuery, new FilmPreparedStatementSetter(film));
@@ -180,22 +177,6 @@ public class FilmDbStorage implements FilmStorage {
                     ps.setLong(1, filmId);
                     ps.setLong(2, genre.getId());
                 });
-    }
-
-    private void validate(Film film) {
-        if (film.getName() == null || film.getName().isBlank()) {
-            throw new FilmAndUserValidationException("Имя не может быть пустым");
-        }
-        if (film.getDescription().length() > MAX_LENGTH) {
-            throw new FilmAndUserValidationException("Описание фильма не может быть больше чем "
-                    + MAX_LENGTH + " символов");
-        }
-        if (film.getReleaseDate().isBefore(MIN_DATE_RELEASE)) {
-            throw new FilmAndUserValidationException("Дата релиза фильма не может быть раньше " + MIN_DATE_RELEASE);
-        }
-        if (film.getDuration() <= 0) {
-            throw new FilmAndUserValidationException("Продолжительность фильма не может быть отрицательной");
-        }
     }
 }
 

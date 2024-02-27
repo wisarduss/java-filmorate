@@ -7,14 +7,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
-import ru.yandex.practicum.filmorate.exception.FilmAndUserValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import ru.yandex.practicum.filmorate.util.DatabaseUtil;
 import ru.yandex.practicum.filmorate.util.statement.UserPreparedStatementSetter;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -33,7 +31,9 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User create(User user) {
-        validate(user);
+        if (user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
         String sqlQuery = "INSERT INTO users (email, login, name, birthday)" +
                 " VALUES (?, ?, ?, ?);";
         long userId = databaseUtil.insertAndReturnId(sqlQuery, new UserPreparedStatementSetter(user));
@@ -44,7 +44,6 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User update(User user) {
-        validate(user);
         Long userId = user.getId();
         String sqlQuery = "UPDATE users SET email = ?, login = ?, name = ?, birthday = ?" +
                 " where id = ?";
@@ -89,23 +88,4 @@ public class UserDbStorage implements UserStorage {
         user.setBirthday(resultSet.getDate("birthday").toLocalDate());
         return user;
     };
-
-
-    private void validate(User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank() || (!user.getEmail().contains("@"))) {
-            throw new FilmAndUserValidationException("Ваш email не может быть пустым или в нем не указан символ '@'");
-        }
-        if (user.getLogin().isBlank() || user.getLogin() == null || user.getLogin().contains(" ")) {
-            throw new FilmAndUserValidationException("Неверный логин");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new FilmAndUserValidationException("Дата вашего рождения не может быть в 'будущем'");
-        }
-        if (user.getName() == null || user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-        }
-    }
-
 }
-
-

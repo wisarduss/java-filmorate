@@ -52,7 +52,7 @@ public class LikeDbStorage implements LikeStorage {
         String sqlQuery = "SELECT * FROM likes " +
                 "WHERE film_id = ? AND user_id = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sqlQuery, getLikeMapper,
+            return Optional.of(jdbcTemplate.queryForObject(sqlQuery, getLikeMapper,
                     film.getId(), user.getId()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();

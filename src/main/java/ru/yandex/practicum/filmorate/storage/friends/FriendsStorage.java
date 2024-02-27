@@ -16,6 +16,4 @@ public interface FriendsStorage {
     List<Friend> getById(User user);
 
     Optional<Friend> getByIdUserAndFriend(User user, User friend);
-
-
 }
