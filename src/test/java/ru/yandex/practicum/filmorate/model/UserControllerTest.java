@@ -14,7 +14,6 @@ import javax.validation.ValidatorFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-import ru.yandex.practicum.filmorate.model.User;
 
 public class UserControllerTest {
     private Validator validator;
