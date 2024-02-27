@@ -18,6 +18,7 @@ import java.util.List;
 public class MpaController {
 
     private final MpaService mpaService;
+
     @GetMapping
     public List<Mpa> getAll() {
         final List<Mpa> ratings = mpaService.findMpa();
