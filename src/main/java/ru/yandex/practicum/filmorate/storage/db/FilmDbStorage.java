@@ -110,7 +110,7 @@ public class FilmDbStorage implements FilmStorage {
             }
             return film;
         } catch (EmptyResultDataAccessException e) {
-            throw new DataNotFoundException("Фильм с id = " + id + " не найден",HttpStatus.NOT_FOUND);
+            throw new DataNotFoundException("Фильм с id = " + id + " не найден", HttpStatus.NOT_FOUND);
         }
     }
 
