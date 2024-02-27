@@ -3,6 +3,10 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.Data;
 
 import javax.validation.constraints.*;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Data
@@ -16,5 +20,4 @@ public class User {
     private String name;
     @PastOrPresent(message = "День рождение не может быть в прошлом")
     private LocalDate birthday;
-
 }

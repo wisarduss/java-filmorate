@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MpaController {
     private final MpaService mpaService;
-
     @GetMapping
     public List<Mpa> getAll() {
         final List<Mpa> ratings = mpaService.findMpa();
@@ -27,7 +26,6 @@ public class MpaController {
 
     @GetMapping("/{id}")
     public Mpa getMpaById(@PathVariable long id) {
-        log.info("Рейтинг с id=" + id + "получен");
         log.info("Рейтинг с id = {} получен", id);
         return mpaService.getMpaById(id);
     }

@@ -90,10 +90,15 @@ public class UserDbStorageTest {
         user.setLogin("wisardus");
         user.setBirthday(LocalDate.of(2003, 5, 10));
         userDbStorage.create(user);
+<<<<<<< HEAD
         User savedUser = userDbStorage.getById(1);
 /*       List<User> users = userDbStorage.findUsers();
         User savedUser = users.get(0);*/
 
+=======
+        List<User> users = userDbStorage.findUsers();
+        User savedUser = users.get(0);
+>>>>>>> f8eaca6cd03b84a8bfea41c8c04ec16b21274142
         assertEquals(savedUser.getName(), user.getName());
         assertEquals(savedUser.getEmail(), user.getEmail());
     }

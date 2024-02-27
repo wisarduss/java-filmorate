@@ -20,7 +20,7 @@ public class MpaService {
     }
 
     public Mpa getMpaById(long id) {
-        log.info("Рейтинг в id = {} получен", id);
+        log.info("Рейтинг с id=" + id + "получен");
         return mpaStorage.getMpaById(id);
     }
 
