@@ -15,4 +15,6 @@ public interface LikeStorage {
     List<Like> getByFilmId(Film film);
 
     Optional<Like> getByIdFilmAndUser(Film film, User user);
+
+    public List<Film> findPopular(long count);
 }

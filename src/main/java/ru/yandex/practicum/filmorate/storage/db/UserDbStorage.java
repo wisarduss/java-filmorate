@@ -78,6 +78,28 @@ public class UserDbStorage implements UserStorage {
         }
     }
 
+    @Override
+    public List<User> getUserFriends(long id) {
+        String sql = "SELECT u.id, u.name, u.login, u.email, u.birthday " +
+                "FROM users u " +
+                "JOIN friends f ON f.friend_id = u.id " +
+                "WHERE f.user_id = ?";
+        return jdbcTemplate.query(sql, getUserMapper, id);
+    }
+
+    @Override
+    public List<User> getCommonFriends(long userId, long otherId) {
+        String sqlQuery = "SELECT * " +
+                "FROM users " +
+                "WHERE id IN (SELECT f.friend_id" +
+                "                  FROM friends f" +
+                "                  INNER JOIN (SELECT friend_id " +
+                "                              FROM friends" +
+                "                              WHERE user_id = ?) o ON f.friend_id = o.friend_id" +
+                "                  WHERE f.user_id = ?);";
+        return jdbcTemplate.query(sqlQuery, getUserMapper, userId, otherId);
+    }
+
 
     private final RowMapper<User> getUserMapper = (resultSet, rowNum) -> {
         User user = new User();

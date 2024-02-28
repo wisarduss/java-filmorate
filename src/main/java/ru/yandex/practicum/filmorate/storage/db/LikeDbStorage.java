@@ -6,15 +6,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Like;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.*;
 import ru.yandex.practicum.filmorate.storage.like.LikeStorage;
 import ru.yandex.practicum.filmorate.util.DatabaseUtil;
 import ru.yandex.practicum.filmorate.util.statement.LikePreparedStatementSetter;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Repository
@@ -59,6 +62,24 @@ public class LikeDbStorage implements LikeStorage {
         }
     }
 
+    @Override
+    public List<Film> findPopular(long count) {;
+        return jdbcTemplate.query(
+                "SELECT f.id, f.name, f.description, f.release_date, f.duration, f.mpa_id, mpa.name AS mpa_name, " +
+                        "string_agg(g.id || ',' || g.name, ';') AS genres, " +
+                        "COUNT(ufl.user_id) AS user_like_count " +
+                        "FROM films f " +
+                        "LEFT JOIN mpa ON f.mpa_id = mpa.id " +
+                        "LEFT JOIN likes ufl on f.id = ufl.film_id " +
+                        "LEFT JOIN film_genres AS fg ON f.id = fg.film_id " +
+                        "LEFT JOIN genres AS g ON fg.genre_id = g.id " +
+                        "GROUP BY f.id " +
+                        "ORDER BY user_like_count DESC " +
+                        "LIMIT ?",
+                LikeDbStorage::mapRowToFilm,
+                count);
+    }
+
     private final RowMapper<Like> getLikeMapper = (resultSet, rowNum) -> {
         Like like = new Like();
         like.setId(resultSet.getLong("id"));
@@ -66,4 +87,32 @@ public class LikeDbStorage implements LikeStorage {
         like.setUserId(resultSet.getLong("user_id"));
         return like;
     };
+
+    public static Film mapRowToFilm(ResultSet row, int rowNum) throws SQLException {
+        Long id = row.getLong("id");
+        String name = row.getString("name");
+        String description = row.getString("description");
+        LocalDate releaseDate = row.getDate("release_date").toLocalDate();
+        long duration = row.getLong("duration");
+        long mpaId = row.getInt("mpa_id");
+        String mpaName = row.getString("mpa_name");
+        Mpa mpa = new Mpa(mpaId, mpaName);
+        Film film = new Film(id, name, description, releaseDate, duration, mpa);
+
+        String genreRowData = row.getString("genres");
+        Set<Genre> genreSet = new HashSet<>();
+
+        if (genreRowData != null && !genreRowData.isEmpty() && !genreRowData.isBlank()) {
+            String[] genreRow = genreRowData.split(";");
+            for (String s : genreRow) {
+                String[] finalGenre = s.split(",");
+                long genreId = Long.parseLong(finalGenre[0]);
+                String genreName = finalGenre[1];
+                Genre genre = new Genre(genreId, genreName);
+                genreSet.add(genre);
+            }
+        }
+        film.setGenres(genreSet);
+        return film;
+    }
 }

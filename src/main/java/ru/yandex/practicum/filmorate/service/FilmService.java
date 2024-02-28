@@ -16,8 +16,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.Genre;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.LinkedHashSet;
@@ -74,12 +72,8 @@ public class FilmService {
         likeStorage.delete(like.get().getId());
     }
 
-    public List<Film> bestByLike(Long count) {
-        List<Film> films = filmStorage.findFilms();
-        films.sort(Comparator.comparingInt((Film film) -> likeStorage.getByFilmId(film).size()));
-        films = films.subList((int) Math.max(films.size() - count, 0), films.size());
-        Collections.reverse(films);
-        return films;
+    public List<Film> bestByLike(long count) {
+        return likeStorage.findPopular(count);
     }
 
     public Film getById(Integer filmId) {

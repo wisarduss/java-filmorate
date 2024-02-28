@@ -10,12 +10,8 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.friends.FriendsStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -87,36 +83,12 @@ public class UserService {
 
     }
 
-    public List<User> getFriendsOfUser(long userId) {
-        User user = userStorage.getById(userId);
-        List<Friend> friend = friendsStorage.getById(user);
-        List<User> friends = new ArrayList<>();
-        for (Friend friendEntry : friend) {
-            if (friendEntry.getUserId().equals(userId)) {
-                friends.add(userStorage.getById(friendEntry.getFriendId()));
-            } else {
-                friends.add(userStorage.getById(friendEntry.getUserId()));
-            }
-        }
-        friends.sort(Comparator.comparingLong(User::getId));
-        return friends;
+    public List<User> getCommonFriends(long userId, long otherId) {
+        return userStorage.getCommonFriends(userId, otherId);
     }
 
-    public List<User> findCommonFriends(long userId, long friendId) {
-        List<Friend> userFriend = friendsStorage.getById(userStorage.getById(userId));
-        List<Friend> otherFriend = friendsStorage.getById(userStorage.getById(friendId));
-
-        Set<Long> userFriends = userFriend.stream()
-                .map(friend -> friend.getUserId().equals(userId) ? friend.getFriendId() : friend.getUserId())
-                .collect(Collectors.toSet());
-
-        Set<Long> otherFriends = otherFriend.stream()
-                .map(friend -> friend.getUserId().equals(friendId) ? friend.getFriendId() : friend.getUserId())
-                .collect(Collectors.toSet());
-        userFriends.retainAll(otherFriends);
-        return userFriends.stream()
-                .map(userStorage::getById)
-                .collect(Collectors.toList());
+    public List<User> getUserFriends(long userId) {
+        return userStorage.getUserFriends(userId);
     }
 
 }
