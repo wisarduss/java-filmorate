@@ -63,7 +63,7 @@ public class LikeDbStorage implements LikeStorage {
     }
 
     @Override
-    public List<Film> findPopular(long count) {;
+    public List<Film> findPopular(long count) {
         return jdbcTemplate.query(
                 "SELECT f.id, f.name, f.description, f.release_date, f.duration, f.mpa_id, mpa.name AS mpa_name, " +
                         "string_agg(g.id || ',' || g.name, ';') AS genres, " +
