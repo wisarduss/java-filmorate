@@ -1,38 +1,25 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.NonNull;
 
+import javax.validation.constraints.*;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
-@NoArgsConstructor(force = true)
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class User {
-    private long id;
-    private Set<Long> friends = new HashSet<>();
-    @NonNull
+    private Long id;
+    @NotEmpty
+    @Email(message = "Email не корректный")
     private String email;
-    @NonNull
+    @NotBlank(message = "Login не может быть пустым")
+    @Pattern(regexp = "^\\S*$")
     private String login;
-    @NonNull
     private String name;
-    @NonNull
+    @NotNull
+    @PastOrPresent(message = "День рождение не может быть в прошлом")
     private LocalDate birthday;
-    public User(long id, @NonNull String email,
-                @NonNull String login, @NonNull String name, @NonNull LocalDate birthday) {
-        this.id = id;
-        this.email = email;
-        this.login = login;
-        this.name = name;
-        this.birthday = birthday;
-    }
 }
-
-
