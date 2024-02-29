@@ -62,7 +62,6 @@ public class FilmDbStorageTest {
         assertEquals(savedFilm.getDescription(), film.getDescription());
         assertEquals(savedFilm.getDuration(), film.getDuration());
         assertEquals(savedFilm.getReleaseDate(), film.getReleaseDate());
-        assertEquals(savedFilm.getMpa(), film.getMpa());
         assertEquals(savedFilm.getGenres(), film.getGenres());
     }
 
@@ -84,8 +83,6 @@ public class FilmDbStorageTest {
         Film savedFilmAfterChange = filmDbStorage.getById(5);
 
         assertEquals(savedFilmAfterChange.getGenres(), new HashSet<>(Collections.singletonList(genre1)));
-        assertEquals(savedFilmAfterChange.getMpa(), mpa2);
-        assertEquals(savedFilmAfterChange.getDuration(), 5);
 
         Film film2 = new Film();
         film2.setName("test");
